@@ -1,0 +1,22 @@
+/* Positioning the heart icon at the top-right corner */
+.relative {
+    position: relative; /* This is needed for absolute positioning of the heart icon */
+  }
+  
+  button {
+    font-size: 1.25rem; /* Adjust size of the heart icon */
+  }
+  
+  button i {
+    transition: all 0.3s ease;
+  }
+  
+  /* Styling the heart icon when it's wishlisted */
+  button i.text-red-700 {
+    color: #e11d48; /* Red color when wishlisted */
+  }
+  
+  button i.text-gray-400 {
+    color: #d1d5db; /* Default gray color when not wishlisted */
+  }
+  

@@ -19,6 +19,9 @@ export class EventsdisplayComponent implements OnInit {
   selectedEvent: any = null;
   isModalOpen: boolean = false;
 
+  isWishlistModalOpen: boolean = false; // Wishlist modal state
+  wishlistedEvents: any[] = []; // Store wishlisted events
+
   // Variables for modal form
   userName: string = '';
   ticketCount: number = 1;
@@ -37,6 +40,11 @@ export class EventsdisplayComponent implements OnInit {
         this.events = data;
         this.filteredEvents = [...this.events];
         this.totalEvents = this.events.length;
+
+        // Initialize wishlist state for each event
+        this.events.forEach((event) => {
+          event.isWishlisted = false;  // Add default wishlist state
+        });
       },
       error: (err) => {
         console.error('Error fetching events:', err);
@@ -54,6 +62,26 @@ export class EventsdisplayComponent implements OnInit {
         console.error('Error fetching statistics:', err);
       },
     });
+  }
+
+  // Toggle the wishlist status
+  toggleWishlist(event: any): void {
+    event.isWishlisted = !event.isWishlisted;  // Toggle wishlist state
+    this.wishlistCount = this.events.filter(e => e.isWishlisted).length; // Update wishlist count
+
+    // Update wishlistedEvents list
+    this.wishlistedEvents = this.events.filter(e => e.isWishlisted);
+    console.log(`${event.title} has been ${event.isWishlisted ? 'added to' : 'removed from'} wishlist.`);
+  }
+
+  // Open the wishlist modal
+  openWishlistModal(): void {
+    this.isWishlistModalOpen = true;
+  }
+
+  // Close the wishlist modal
+  closeWishlistModal(): void {
+    this.isWishlistModalOpen = false;
   }
 
   // Open registration modal
