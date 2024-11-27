@@ -16,6 +16,12 @@ import { BookingsComponent } from './pages/organizer/bookings/bookings.component
 import { AddEventComponent } from './pages/organizer/events/add-event/add-event.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ParticipantComponent } from './pages/participant/participant.component';
+import { EventsinfoComponent } from './pages/participant/eventsinfo/eventsinfo.component';
+import { WishlistComponent } from './pages/participant/wishlist/wishlist.component';
+import { ModalPopComponent } from './pages/participant/model-pop/model-pop.component';
+import { Userbookings } from './pages/participant/userbookings/userbookings.component';
+import { EventsdisplayComponent } from './pages/participant/eventsdisplay/eventsdisplay.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +37,13 @@ import { HttpClientModule } from '@angular/common/http';
     EventsComponent,
     BookingsComponent,
     AddEventComponent,
-    RegisterComponent
+    RegisterComponent,
+    ParticipantComponent,
+    EventsinfoComponent,
+    WishlistComponent,
+    ModalPopComponent,
+    Userbookings,
+    EventsdisplayComponent
   ],
   imports: [
     BrowserModule,

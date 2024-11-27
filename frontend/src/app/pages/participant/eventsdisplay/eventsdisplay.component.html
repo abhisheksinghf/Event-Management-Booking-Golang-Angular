@@ -1,0 +1,35 @@
+<!-- Events List -->
+<div class="events-list bg-gray-900 p-6 rounded-lg shadow-lg">
+    <h2 class="text-2xl font-bold text-white mb-4">Upcoming Events</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div class="bg-gray-800 p-6 rounded-lg shadow-lg" *ngFor="let event of filteredEvents">
+        <img
+          src="assets/images/eve2.jpeg"
+          alt="Event Image"
+          class="rounded-lg mb-4 w-full h-40 object-cover"
+        />
+        <h3 class="text-xl font-bold text-white">{{ event.title }}</h3>
+        <p class="text-gray-400 text-sm">{{ event.date }} | {{ event.time }}</p>
+        <p class="text-gray-300 text-sm">{{ event.location }}</p>
+        <p class="text-gray-200 mt-2">Category: {{ event.category }}</p>
+        <p class="text-gray-200 mt-2">Ticket Price: ${{ event.ticket_price }}</p>
+        <p class="text-gray-200 mt-2">Available Tickets: {{ event.available_tickets }}</p>
+        <button
+          class="mt-4 bg-gradient-to-r from-purple-600 via-pink-500 to-purple-700 hover:bg-purple-700 text-white py-2 px-4 rounded shadow-lg transition-all"
+          (click)="openRegisterModal(event)"
+        >
+          Register
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal Pop for Registration -->
+  <app-model-pop
+    *ngIf="isModalOpen"
+    [selectedEvent]="selectedEvent"
+    
+    (closeModal)="closeRegisterModal()"
+    (registerEvent)="registerForEvent()"
+  ></app-model-pop>
+  

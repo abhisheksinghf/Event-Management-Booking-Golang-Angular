@@ -1,0 +1,51 @@
+<div class="eventsinfo-container min-h-screen bg-gray-900 p-6">
+    <!-- Count Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center">
+        <h3 class="text-xl font-semibold">Total Events</h3>
+        <p class="text-3xl font-bold">{{ totalEvents }}</p>
+      </div>
+      <div class="bg-gradient-to-r from-green-500 to-teal-600 text-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center">
+        <h3 class="text-xl font-semibold">Tickets Booked</h3>
+        <p class="text-3xl font-bold">{{ ticketsBooked }}</p>
+      </div>
+      <div class="bg-gradient-to-r from-yellow-500 to-orange-600 text-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center">
+        <h3 class="text-xl font-semibold">Wishlist</h3>
+        <p class="text-3xl font-bold">{{ wishlistCount }}</p>
+      </div>
+      <div class="bg-gradient-to-r from-red-500 to-pink-600 text-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center">
+        <h3 class="text-xl font-semibold">Notifications</h3>
+        <p class="text-3xl font-bold">{{ notifications }}</p>
+      </div>
+    </div>
+  
+    <!-- Upcoming Events Section -->
+    <div class="upcoming-events bg-gray-900 p-6 rounded-lg shadow-lg">
+      <h2 class="text-2xl font-bold text-white mb-4">Upcoming Events</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div class="bg-gray-800 p-6 rounded-lg shadow-lg" *ngFor="let event of filteredEvents">
+          <img src="assets/images/eve2.jpeg" alt="Event Image" class="rounded-lg mb-4 w-full h-40 object-cover" />
+          <h3 class="text-xl font-bold text-white">{{ event.title }}</h3>
+          <p class="text-gray-400 text-sm">{{ event.date }} | {{ event.time }}</p>
+          <p class="text-gray-300 text-sm">{{ event.location }}</p>
+          <p class="text-gray-200 mt-2">Category: {{ event.category }}</p>
+          <p class="text-gray-200 mt-2">Ticket Price: ${{ event.ticket_price }}</p>
+          <p class="text-gray-200 mt-2">Available Tickets: {{ event.available_tickets }}</p>
+          <button
+            class="mt-4 bg-gradient-to-r from-purple-600 via-pink-500 to-purple-700 hover:bg-purple-700 text-white py-2 px-4 rounded shadow-lg transition-all"
+            (click)="openRegisterModal(event)"
+          >
+            Register
+          </button>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Modal Pop -->
+    <app-model-pop
+      *ngIf="isModalOpen"
+      [selectedEvent]="selectedEvent"
+      (closeModal)="closeRegisterModal()"
+    ></app-model-pop>
+  </div>
+  

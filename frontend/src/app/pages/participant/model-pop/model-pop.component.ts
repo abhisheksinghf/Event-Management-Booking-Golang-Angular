@@ -3,11 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router'; // Import Router for navigation
 
 @Component({
-  selector: 'app-register-modal',
-  templateUrl: './register-modal.component.html',
-  styleUrls: ['./register-modal.component.css'],
+  selector: 'app-model-pop',
+  templateUrl: './model-pop.component.html',
+  styleUrls: ['./model-pop.component.css'],
 })
-export class RegisterModalComponent {
+export class ModalPopComponent {
   @Input() selectedEvent: any | null = null; // Receive event details
   @Output() closeModal = new EventEmitter<void>(); // Emit when modal closes
   @Output() proceedToPayment = new EventEmitter<void>(); // Emit when proceeding to payment

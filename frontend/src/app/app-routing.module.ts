@@ -9,6 +9,11 @@ import { DashboardComponent } from './pages/organizer/dashboard/dashboard.compon
 import { EventsComponent } from './pages/organizer/events/events.component'; // Import Events Component
 import { BookingsComponent } from './pages/organizer/bookings/bookings.component'; // Import Bookings Component
 import { RegisterComponent } from './auth/register/register.component';
+import { ParticipantComponent } from './pages/participant/participant.component';
+import { EventsinfoComponent } from './pages/participant/eventsinfo/eventsinfo.component';
+import { WishlistComponent } from './pages/participant/wishlist/wishlist.component';
+import { Userbookings } from './pages/participant/userbookings/userbookings.component';
+import { EventsdisplayComponent } from './pages/participant/eventsdisplay/eventsdisplay.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent }, // Default Route
@@ -29,6 +34,18 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Default child route
     ]
   },
+  
+  {
+    path: 'participant/:user_id', // Dynamically pass the user_id in the URL
+    component: ParticipantComponent,
+    children: [
+      { path: 'dashboard', component: EventsinfoComponent },
+      { path: 'allevents', component: EventsdisplayComponent },
+      { path: 'userbookings', component: Userbookings },
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Default child route
+    ]
+  },
+
 ];
 
 @NgModule({

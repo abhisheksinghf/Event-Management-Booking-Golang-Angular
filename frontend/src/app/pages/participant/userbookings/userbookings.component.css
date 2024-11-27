@@ -1,0 +1,41 @@
+.booking-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .grid {
+    gap: 1.5rem;
+  }
+  
+  .bg-gray-900 {
+    background-color: #1a202c;
+  }
+  
+  .bg-gray-800 {
+    background-color: #2d3748;
+  }
+  
+  .text-white {
+    color: white;
+  }
+  
+  .text-gray-400 {
+    color: #a0aec0;
+  }
+  
+  .shadow-lg {
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .rounded-lg {
+    border-radius: 0.5rem;
+  }
+  
+  .p-6 {
+    padding: 1.5rem;
+  }
+  
+  .min-h-screen {
+    min-height: 100vh;
+  }
+  
