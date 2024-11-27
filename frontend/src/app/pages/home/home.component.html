@@ -1,0 +1,63 @@
+<div class="bg-gray-900 min-h-screen text-white">
+  <!-- Hero Section -->
+  <section class="relative bg-cover bg-center h-[80vh]" style="background-image: url('assets/images/hero.jpeg');">
+    <div class="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
+      <div class="text-center px-4 md:px-12">
+        <h1 class="text-5xl font-extrabold text-white leading-tight mb-4">Discover Amazing Events Near You</h1>
+        <p class="text-lg text-gray-200 mb-6">Book your tickets now and be part of unforgettable experiences!</p>
+        <a
+          href="#events"
+          class="inline-block bg-gradient-to-r from-purple-600 via-pink-500 to-purple-700 hover:bg-purple-700 text-white text-xl py-3 px-6 rounded-lg shadow-lg transition-all duration-300"
+        >
+          Explore More
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Event List Section -->
+  <main id="events" class="container mx-auto py-8 px-4">
+    <h2 class="text-3xl font-semibold mb-6">Upcoming Events</h2>
+
+    <!-- Filter Section -->
+    <div class="flex justify-between mb-6">
+      <div class="flex gap-4">
+        <select class="bg-gray-800 text-white px-4 py-2 rounded" (change)="filterEvents($event)">
+          <option value="">Select Category</option>
+          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+        </select>
+
+        <select class="bg-gray-800 text-white px-4 py-2 rounded" (change)="filterEvents($event)">
+          <option value="">Select Location</option>
+          <option *ngFor="let location of locations" [value]="location">{{ location }}</option>
+        </select>
+      </div>
+
+      <div class="flex gap-4">
+        <input type="text" class="bg-gray-800 text-white px-4 py-2 rounded" placeholder="Search events..." (input)="searchEvent($event)" />
+      </div>
+    </div>
+
+    <!-- Events Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div class="bg-gray-800 p-6 rounded-lg shadow-lg" *ngFor="let event of filteredEvents">
+        <img src="assets/images/eve2.jpeg" alt="Event Image" class="rounded-lg mb-4 w-full h-40 object-cover" />
+        <h3 class="text-xl font-bold text-white">{{ event.title }}</h3>
+        <p class="text-gray-400 text-sm">{{ event.date }} | {{ event.time }}</p>
+        <p class="text-gray-300 text-sm">{{ event.location }}</p>
+        <p class="text-gray-200 mt-2">Category: {{ event.category }}</p>
+        <p class="text-gray-200 mt-2">Ticket Price: ${{ event.ticket_price }}</p>
+        <p class="text-gray-200 mt-2">Available Tickets: {{ event.available_tickets }}</p>
+        <button
+          class="mt-4 bg-gradient-to-r from-purple-600 via-pink-500 to-purple-700 hover:bg-purple-700 text-white py-2 px-4 rounded shadow-lg transition-all"
+          (click)="openRegisterModal(event)"
+        >
+          Register
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <app-register-modal *ngIf="isModalOpen" [selectedEvent]="selectedEvent" (closeModal)="closeRegisterModal()" (proceedToPayment)="proceedToPayment()"></app-register-modal>
+</div>

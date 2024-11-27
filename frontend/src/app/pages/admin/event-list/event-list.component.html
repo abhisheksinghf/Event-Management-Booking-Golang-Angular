@@ -1,0 +1,71 @@
+<div class="bg-gray-900 text-white min-h-screen p-6">
+  <header class="text-center py-4 bg-gradient-to-r from-purple-500 to-purple-800 rounded">
+    <h1 class="text-2xl font-bold">Manage Events</h1>
+    <button
+      (click)="openAddEventPopup()"
+      class="mt-4 bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded"
+    >
+      Add Event
+    </button>
+    <div class="mt-4">
+      <!-- Export Buttons -->
+      <button
+        (click)="exportToPDF()"
+        class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded mr-4"
+      >
+        Export to PDF
+      </button>
+      <button
+        (click)="exportToExcel()"
+        class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded"
+      >
+        Export to Excel
+      </button>
+    </div>
+  </header>
+
+  <main class="mt-8 container mx-auto">
+    <table class="table-auto w-full text-left">
+      <thead>
+        <tr class="bg-gray-700">
+          <th class="p-4">Title</th>
+          <th class="p-4">Date</th>
+          <th class="p-4">Location</th>
+          <th class="p-4">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          class="border-b border-gray-700"
+          *ngFor="let event of events"
+        >
+          <td class="p-4">{{ event.title }}</td>
+          <td class="p-4">{{ event.date }}</td>
+          <td class="p-4">{{ event.location }}</td>
+          <td class="p-4">
+            <button
+              class="mr-2 bg-blue-600 hover:bg-blue-700 text-white py-1 px-3 rounded"
+              (click)="openEditEventPopup(event)"
+            >
+              Edit
+            </button>
+            <button
+              class="bg-red-600 hover:bg-red-700 text-white py-1 px-3 rounded"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+
+  <!-- Event Form Popup -->
+  <app-event-form
+    *ngIf="isPopupOpen"
+    [event]="selectedEvent"
+    [isEditMode]="isEditMode"
+    (saveEvent)="handleSaveEvent($event)"
+    (close)="closePopup()"
+  ></app-event-form>
+</div>

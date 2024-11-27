@@ -1,0 +1,39 @@
+/* Table Container */
+table {
+    border-collapse: collapse; /* Ensures borders collapse into a single line */
+    width: 100%;
+    background-color: #1f2937; /* Dark background for the table */
+    color: #f9fafb; /* Light text for readability */
+  }
+  
+  /* Table Headers */
+  thead th {
+    border: 1px solid #374151; /* Border color for header cells */
+    padding: 12px;
+    background-color: #374151; /* Slightly lighter than the row background */
+    text-align: center; /* Center-align text */
+  }
+  
+  /* Table Rows */
+  tbody td {
+    border: 1px solid #4b5563; /* Subtle border for cells */
+    padding: 12px;
+    text-align: center; /* Center-align text */
+  }
+  
+  /* Hover Effect for Rows */
+  tbody tr:hover {
+    background-color: #374151; /* Highlight row on hover */
+  }
+  
+  /* Action Buttons */
+  button {
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    transform: scale(1.05); /* Slight zoom effect on hover */
+    transition: 0.2s ease-in-out;
+  }
+  

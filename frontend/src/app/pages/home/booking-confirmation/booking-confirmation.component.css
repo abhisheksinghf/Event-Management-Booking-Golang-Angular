@@ -1,0 +1,110 @@
+/* Glassmorphism Style */
+.bg-opacity-30 {
+    background: rgba(255, 255, 255, 0.3);
+  }
+  
+  .backdrop-blur-lg {
+    backdrop-filter: blur(10px);
+  }
+  
+  .text-gray-100 {
+    color: #f1f1f1;
+  }
+  
+  .text-gray-300 {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  .text-white {
+    color: white;
+  }
+  
+  .shadow-2xl {
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+  .font-semibold {
+    font-weight: 600;
+  }
+  
+  .text-purple-600 {
+    color: #7e5bef;
+  }
+  
+  .text-purple-700 {
+    color: #6a4fcf;
+  }
+  
+  .bg-purple-600 {
+    background-color: #7e5bef;
+  }
+  
+  .bg-purple-700 {
+    background-color: #6a4fcf;
+  }
+  
+  button:hover {
+    transform: scale(1.05);
+  }
+  
+  button {
+    transition: all 0.3s ease;
+  }
+  
+  button:active {
+    transform: scale(0.95);
+  }
+  
+  /* Add some spacing and padding */
+  .space-y-4 > :not(:last-child) {
+    margin-bottom: 1rem;
+  }
+  
+  /* Button Styling */
+  button {
+    background-color: #7e5bef;
+    border: none;
+    border-radius: 30px;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #6a4fcf;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  button:active {
+    background-color: #5a3ccf;
+    box-shadow: none;
+    transform: scale(0.98);
+  }
+  
+  /* Apply Background Image */
+  .booking-confirmation-container {
+    background-image: url('/assets/images/book-success.jpeg'); /* Adjust the path to match your asset */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh; /* Ensure the background covers the entire screen */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .booking-card {
+    background: rgba(255, 255, 255, 0.4); /* Slightly transparent background */
+    backdrop-filter: blur(10px); /* Glassmorphism effect */
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+    max-width: 566px;
+    width: 100%;
+    text-align: center;
+  }
+  

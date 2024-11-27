@@ -1,0 +1,16 @@
+/* You can add more styles for responsive behavior and other design aspects */
+nav ul {
+    list-style-type: none;
+    display: flex;
+    gap: 20px;
+  }
+  
+  nav ul li a {
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+  }
+  
+  nav ul li a:hover {
+    color: #e2b97f; /* light gold shade */
+  }
+  

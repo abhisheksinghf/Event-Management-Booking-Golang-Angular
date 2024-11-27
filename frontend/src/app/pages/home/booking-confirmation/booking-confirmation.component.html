@@ -1,0 +1,43 @@
+<div class="booking-confirmation-container flex justify-center items-center min-h-screen bg-gradient-to-br from-purple-800 via-indigo-700 to-blue-600">
+    <div class="booking-card bg-white rounded-lg shadow-xl max-w-6xl w-full p-8 space-y-6">
+      <!-- Title Section -->
+      <h2 class="text-3xl font-extrabold text-purple-800 text-center">Booking Confirmation</h2>
+      <p class="mt-4 text-lg text-gray-700 text-center">Thank you for registering for the event!</p>
+  
+      <!-- Booking Details Section -->
+      <div class="text-gray-800 space-y-4">
+        <div class="flex justify-between items-center border-b pb-4">
+          <p class="text-lg font-semibold text-gray-600">Booking ID:</p>
+          <p class="text-lg font-bold text-gray-900">{{ bookingDetails.bookingId }}</p>
+        </div>
+  
+        <div class="flex justify-between items-center border-b pb-4">
+          <p class="text-lg font-semibold text-gray-600">Event:</p>
+          <p class="text-lg font-bold text-gray-900">{{ bookingDetails.event.title }}</p>
+        </div>
+  
+        <div class="flex justify-between items-center border-b pb-4">
+          <p class="text-lg font-semibold text-gray-600">Location:</p>
+          <p class="text-lg font-bold text-gray-900">{{ bookingDetails.event.location }}</p>
+        </div>
+  
+        <div class="flex justify-between items-center border-b pb-4">
+          <p class="text-lg font-semibold text-gray-600">Date:</p>
+          <p class="text-lg font-bold text-gray-900">{{ bookingDetails.event.date }}</p>
+        </div>
+  
+        <div class="flex justify-between items-center pb-4">
+          <p class="text-lg font-semibold text-gray-600">Cost:</p>
+          <p class="text-lg font-bold text-gray-900">${{ bookingDetails.event.cost }}</p>
+        </div>
+      </div>
+  
+      <!-- Download Button -->
+      <div class="mt-8 flex justify-center">
+        <button class="bg-gradient-to-r from-purple-600 to-purple-700 text-white py-3 px-8 rounded-full text-lg font-semibold shadow-lg hover:shadow-2xl transform hover:scale-105 transition duration-300 ease-in-out">
+          Download Ticket
+        </button>
+      </div>
+    </div>
+  </div>
+  

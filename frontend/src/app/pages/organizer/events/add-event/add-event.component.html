@@ -1,0 +1,69 @@
+<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg relative text-black">
+        <button (click)="closeModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+            ✖
+        </button>
+        <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">
+            {{ event ? 'Edit Event' : 'Add New Event' }}
+        </h2>
+        <form [formGroup]="addEventForm" (ngSubmit)="onSubmit()" class="space-y-4">
+            <div>
+                <label class="block text-sm font-semibold text-gray-700">Title</label>
+                <input type="text" formControlName="title" placeholder="Event title"
+                    class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700">Description</label>
+                <textarea formControlName="description" placeholder="Event details"
+                    class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    rows="3"></textarea>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700">Location</label>
+                <input type="text" formControlName="location" placeholder="Event location"
+                    class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700">Date</label>
+                    <input type="date" formControlName="date"
+                        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700">Time</label>
+                    <input type="time" formControlName="time"
+                        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700">Category</label>
+                <select formControlName="category"
+                    class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="" disabled selected>Select a category</option>
+                    <option value="Music">Music</option>
+                    <option value="Tech">Tech</option>
+                    <option value="Business">Business</option>
+                    <option value="Sports">Sports</option>
+                </select>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700">Ticket Price</label>
+                    <input type="number" formControlName="ticket_price" placeholder="Price"
+                        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700">Total Tickets</label>
+                    <input type="number" formControlName="total_tickets" placeholder="Tickets"
+                        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+            </div>
+            <div>
+                <button type="submit"
+                    class="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700">
+                    {{ event ? 'Save Changes' : 'Save Event' }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

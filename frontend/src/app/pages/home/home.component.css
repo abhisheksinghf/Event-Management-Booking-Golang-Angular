@@ -1,0 +1,39 @@
+/* Hero Section Styling */
+.hero-section {
+  height: 100vh;
+  background-image: url('/assets/images/hero.jpeg');
+  background-size: cover;
+  background-position: center;
+  color: white;
+}
+
+.hero-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+select, input {
+  border: none;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+select:focus, input:focus {
+  outline: none;
+  border-color: #a855f7;
+}
+
+button {
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(1);
+}

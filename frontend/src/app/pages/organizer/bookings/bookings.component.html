@@ -1,0 +1,20 @@
+<div>
+    <h2 class="text-2xl font-bold mb-6">Bookings</h2>
+    <table class="w-full bg-white rounded-lg shadow-md">
+      <thead>
+        <tr>
+          <th class="p-4 text-left">Event</th>
+          <th class="p-4 text-left">Attendee</th>
+          <th class="p-4 text-left">Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let booking of bookings">
+          <td class="p-4">{{ booking.event }}</td>
+          <td class="p-4">{{ booking.attendee }}</td>
+          <td class="p-4">{{ booking.email }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
