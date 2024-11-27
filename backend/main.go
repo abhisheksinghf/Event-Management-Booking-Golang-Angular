@@ -26,6 +26,7 @@ func main() {
 	http.Handle("/register", corsHandler.Handler(http.HandlerFunc(handlers.Register)))
 	http.Handle("/login", corsHandler.Handler(http.HandlerFunc(handlers.Login))) // Add login handler
 	http.Handle("/addEvent", corsHandler.Handler(http.HandlerFunc(handlers.AddEvent))) // Add event handler
+	http.Handle("/bookticket", corsHandler.Handler(http.HandlerFunc(handlers.BookTicket))) // Add event handler
 	http.HandleFunc("/getevents", handlers.GetEvents)
 
 	// Start the server

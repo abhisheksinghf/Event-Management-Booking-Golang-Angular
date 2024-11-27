@@ -87,3 +87,76 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(events)
 }
+func BookTicket(w http.ResponseWriter, r *http.Request) {
+    // Parse the request body
+    var registration struct {
+        EventID    int     `json:"event_id"`
+        Name       string  `json:"name"`
+        TotalPrice float64 `json:"total_price"`
+    }
+
+    err := json.NewDecoder(r.Body).Decode(&registration)
+    if err != nil {
+        log.Println("Error decoding registration data:", err)
+        http.Error(w, "Invalid registration data", http.StatusBadRequest)
+        return
+    }
+
+    // Open the database connection
+    db := database.Connect()
+    defer db.Close()
+
+    // Start a transaction
+    tx, err := db.Begin()
+    if err != nil {
+        log.Println("Error starting transaction:", err)
+        http.Error(w, "Could not process registration", http.StatusInternalServerError)
+        return
+    }
+
+    // Insert the ticket registration
+    _, err = tx.Exec(`
+        INSERT INTO event_tickets (event_id, name, total_price) 
+        VALUES (?, ?, ?)`, registration.EventID, registration.Name, registration.TotalPrice)
+    if err != nil {
+        log.Println("Error inserting registration:", err)
+        tx.Rollback()
+        http.Error(w, "Could not register ticket", http.StatusInternalServerError)
+        return
+    }
+
+    // Decrement the available_tickets count
+    result, err := tx.Exec(`
+        UPDATE events 
+        SET available_tickets = available_tickets - 1 
+        WHERE event_id = ? AND available_tickets > 0`, registration.EventID)
+    if err != nil {
+        log.Println("Error updating available tickets:", err)
+        tx.Rollback()
+        http.Error(w, "Could not update ticket availability", http.StatusInternalServerError)
+        return
+    }
+
+    rowsAffected, _ := result.RowsAffected()
+    if rowsAffected == 0 {
+        log.Println("No tickets available or invalid event_id")
+        tx.Rollback()
+        http.Error(w, "Tickets sold out or invalid event ID", http.StatusBadRequest)
+        return
+    }
+
+    // Commit the transaction
+    err = tx.Commit()
+    if err != nil {
+        log.Println("Error committing transaction:", err)
+        http.Error(w, "Could not finalize registration", http.StatusInternalServerError)
+        return
+    }
+
+    // Respond with success in JSON format
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(http.StatusOK)
+    json.NewEncoder(w).Encode(map[string]string{
+        "message": "Registration successful",
+    })
+}
