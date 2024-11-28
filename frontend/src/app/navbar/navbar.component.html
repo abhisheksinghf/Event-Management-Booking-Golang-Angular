@@ -1,15 +1,26 @@
-<header class="bg-gradient-to-r from-purple-500 via-purple-700 to-purple-900 p-4 shadow-lg">
-    <div class="container mx-auto flex justify-between items-center">
-      <div class="text-white font-bold text-2xl">Eventmox</div>
-      <nav>
-        <ul class="flex space-x-6">
-          <li><a class="text-white hover:text-purple-300 transition-all" routerLink="/home">Home</a></li>
-          <li><a class="text-white hover:text-purple-300 transition-all" routerLink="/events">Events</a></li>
-          <li><a class="text-white hover:text-purple-300 transition-all" routerLink="/about">About</a></li>
-          <li><a class="text-white hover:text-purple-300 transition-all" routerLink="/contact">Contact</a></li>
-          <li><a class="text-white hover:text-purple-300 transition-all" routerLink="/login">Login</a></li>
-        </ul>
-      </nav>
+<header class="bg-gradient-to-r from-purple-500 via-purple-700 to-purple-900 p-4">
+  <div class="container mx-auto flex justify-between items-center">
+    <!-- Branding -->
+    <div class="text-white font-bold text-2xl">Eventmox</div>
+    
+    <!-- Navigation Links -->
+    <nav>
+      <ul class="flex space-x">
+        <!-- <li><a class="text-white hover:text-purple-300 transition-all" routerLink="/">Home</a></li>
+        <li><a class="text-white hover:text-purple-300 transition-all" routerLink="/events">Events</a></li> -->
+        <!-- <li><a class="text-white hover:text-purple-300 transition-all" routerLink="/about">About</a></li>
+        <li><a class="text-white hover:text-purple-300 transition-all" routerLink="/contact">Contact</a></li> -->
+      </ul>
+    </nav>
+
+    <!-- Buttons for Login and Signup -->
+    <div class="flex space-x-4">
+      <button class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg transition-all">
+        <a routerLink="/login">Login</a>
+      </button>
+      <button class="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg transition-all">
+        <a routerLink="/register">Signup</a>
+      </button>
     </div>
-  </header>
-  
+  </div>
+</header>
