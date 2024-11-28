@@ -160,3 +160,174 @@ func BookTicket(w http.ResponseWriter, r *http.Request) {
         "message": "Registration successful",
     })
 }
+
+func GetEventsByOrganizer(w http.ResponseWriter, r *http.Request) {
+	// Set CORS headers to allow requests from Angular app running on localhost:4200
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:4200")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+	// Get organizer ID from query parameter
+	organizerID := r.URL.Query().Get("orgId")
+	if organizerID == "" {
+		http.Error(w, "Missing orgId query parameter", http.StatusBadRequest)
+		return
+	}
+
+	// Connect to the database
+	db := database.Connect()
+	defer db.Close()
+
+	// Query the database for events related to the organizer ID
+	rows, err := db.Query(`
+		SELECT event_id, title, description, location, date, time, category, ticket_price, total_tickets, available_tickets, organizer_id
+		FROM events
+		WHERE organizer_id = ?`, organizerID)
+
+	if err != nil {
+		log.Println("Error fetching events:", err)
+		http.Error(w, "Error fetching events", http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	// Create a slice to hold the events
+	var events []models.Event
+	for rows.Next() {
+		var event models.Event
+		if err := rows.Scan(&event.EventID, &event.Title, &event.Description, &event.Location, &event.Date, &event.Time, &event.Category, &event.TicketPrice, &event.TotalTickets, &event.AvailableTickets, &event.OrganizerID); err != nil {
+			log.Println("Error scanning event:", err)
+			http.Error(w, "Error scanning event", http.StatusInternalServerError)
+			return
+		}
+		events = append(events, event)
+	}
+
+	// If no events are found, return an empty array
+	if len(events) == 0 {
+		events = []models.Event{}
+	}
+
+	// Send events as JSON response
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(events); err != nil {
+		log.Println("Error encoding events:", err)
+		http.Error(w, "Error encoding events", http.StatusInternalServerError)
+	}
+}
+
+func GetBookings(w http.ResponseWriter, r *http.Request) {
+	// Handle CORS preflight request
+	if r.Method == "OPTIONS" {
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:4200")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	// Set CORS headers for actual request
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:4200")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+	// Get organizer ID from query parameter
+	organizerID := r.URL.Query().Get("orgId")
+	if organizerID == "" {
+		http.Error(w, "Missing orgId query parameter", http.StatusBadRequest)
+		return
+	}
+
+	// Connect to the database
+	db := database.Connect()
+	defer db.Close()
+
+	// Query to fetch event and ticket details for the given organizer ID
+	rows, err := db.Query(`
+		SELECT 
+			e.event_id, 
+			e.title, 
+			e.location, 
+			e.date, 
+			e.time, 
+			et.ticket_id, 
+			et.name AS ticket_name, 
+			et.total_price
+		FROM 
+			events e
+		JOIN 
+			event_tickets et ON e.event_id = et.event_id
+		WHERE 
+			e.organizer_id = ?`, organizerID)
+
+	if err != nil {
+		log.Println("Error fetching events and tickets:", err)
+		http.Error(w, "Error fetching events and tickets", http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	// Prepare a slice to store the results
+	var bookings []models.EventWithTickets
+
+	// Loop through the result set and populate the bookings slice
+	for rows.Next() {
+		var booking models.EventWithTickets
+		if err := rows.Scan(&booking.EventID, &booking.Title, &booking.Location, &booking.Date, &booking.Time, &booking.TicketID, &booking.TicketName, &booking.TotalPrice); err != nil {
+			log.Println("Error scanning event and ticket:", err)
+			http.Error(w, "Error scanning event and ticket", http.StatusInternalServerError)
+			return
+		}
+		bookings = append(bookings, booking)
+	}
+
+	// If no bookings are found, return an empty array
+	if len(bookings) == 0 {
+		bookings = []models.EventWithTickets{}
+	}
+
+	// Send the bookings as JSON response
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(bookings); err != nil {
+		log.Println("Error encoding bookings:", err)
+		http.Error(w, "Error encoding bookings", http.StatusInternalServerError)
+	}
+}
+
+func DeleteEvent(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "OPTIONS" {
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:4200")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	// Set CORS headers for the DELETE method
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:4200")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+	// Get the event ID from the query parameters
+	eventID := r.URL.Query().Get("eventId")
+	if eventID == "" {
+		http.Error(w, "Missing eventId query parameter", http.StatusBadRequest)
+		return
+	}
+
+	// Connect to the database
+	db := database.Connect()
+	defer db.Close()
+
+	// Query to delete the event from the 'events' table
+	_, err := db.Exec("DELETE FROM events WHERE event_id = ?", eventID)
+	if err != nil {
+		log.Println("Error deleting event:", err)
+		http.Error(w, "Error deleting event", http.StatusInternalServerError)
+		return
+	}
+
+	// Respond with a success message
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Event deleted successfully"))
+}

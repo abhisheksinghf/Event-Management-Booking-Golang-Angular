@@ -28,6 +28,9 @@ func main() {
 	http.Handle("/addEvent", corsHandler.Handler(http.HandlerFunc(handlers.AddEvent))) // Add event handler
 	http.Handle("/bookticket", corsHandler.Handler(http.HandlerFunc(handlers.BookTicket))) // Add event handler
 	http.HandleFunc("/getevents", handlers.GetEvents)
+	http.HandleFunc("/geteventsbyorgid", handlers.GetEventsByOrganizer)
+	http.HandleFunc("/getbookings", handlers.GetBookings)
+	http.HandleFunc("/deleteevent", handlers.DeleteEvent)
 
 	// Start the server
 	log.Println("Server starting on port 8080...")
