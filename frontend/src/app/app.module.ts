@@ -22,6 +22,10 @@ import { WishlistComponent } from './pages/participant/wishlist/wishlist.compone
 import { ModalPopComponent } from './pages/participant/model-pop/model-pop.component';
 import { Userbookings } from './pages/participant/userbookings/userbookings.component';
 import { EventsdisplayComponent } from './pages/participant/eventsdisplay/eventsdisplay.component';
+import { AdmindashComponent } from './pages/superadmin/admindash/admindash.component';
+import { EventsdashComponent } from './pages/superadmin/eventsdash/eventsdash.component';
+import { AdminbookingsComponent } from './pages/superadmin/adminbookings/adminbookings.component';
+import { SuperadminComponent } from './pages/superadmin/superadmin.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +47,11 @@ import { EventsdisplayComponent } from './pages/participant/eventsdisplay/events
     WishlistComponent,
     ModalPopComponent,
     Userbookings,
-    EventsdisplayComponent
+    EventsdisplayComponent,
+    AdmindashComponent,
+    EventsdashComponent,
+    AdminbookingsComponent,
+    SuperadminComponent
   ],
   imports: [
     BrowserModule,

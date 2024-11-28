@@ -1,71 +1,74 @@
 <div class="min-h-screen bg-gray-900 text-gray-100 p-6">
-  <!-- Page Header -->
-  <div class="mb-6">
-    <h2 class="text-2xl font-bold">Manage Events</h2>
-    <button
-      class="mt-4 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg"
-      (click)="openModal()"
-    >
-      Organize Event
-    </button>
-  </div>
-  <div class="mt-4">
-    <!-- Export Buttons -->
-    <button
-      (click)="exportToPDF()"
-      class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded mr-4"
-    >
-      Export to PDF
-    </button>
-    <button
-      (click)="exportToExcel()"
-      class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded"
-    >
-      Export to Excel
-    </button>
-  </div>
-  <!-- Events Table -->
-  <div class="overflow-x-auto">
-    <table id="eventsTable" class="display cell-border text-center" style="width:100%;">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Date</th>
-          <th>Location</th>
-          <th>Ticket Price ($)</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let event of events">
-          <td>{{ event.title }}</td>
-          <td>{{ event.date }}</td>
-          <td>{{ event.location }}</td>
-          <td>{{ event.ticket_price }}</td>
-          <td>
-            <button
-              class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg"
-              (click)="openModal(event)"
-            >
-              Edit
-            </button>
-            <button
-              class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg ml-2"
-              (click)="deleteEvent(event.id)"
-            >
-              Delete
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <div class="max-w-7xl mx-auto">
+    <!-- Page Header -->
+    <div class="mb-6">
+      <h2 class="text-2xl font-bold">Manage Events</h2>
+      <button
+        class="mt-4 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg"
+        (click)="openModal()"
+      >
+        Organize Event
+      </button>
+    </div>
+    <div class="mt-4">
+      <!-- Export Buttons -->
+      <button
+        (click)="exportToPDF()"
+        class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg mr-4"
+      >
+        Export to PDF
+      </button>
+      <button
+        (click)="exportToExcel()"
+        class="bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded-lg"
+      >
+        Export to Excel
+      </button>
+    </div>
 
-  <!-- Add/Edit Event Modal -->
-  <app-add-event
-    *ngIf="showModal"
-    [event]="selectedEvent"
-    (closeModalEvent)="closeModal()"
-    (saveEvent)="saveEvent($event)"
-  ></app-add-event>
+    <!-- Events Table -->
+    <div class="overflow-x-auto mt-6">
+      <table id="eventsTable" class="min-w-full text-sm table-auto text-center border-separate border-spacing-0">
+        <thead class="bg-gray-800 text-white">
+          <tr>
+            <th class="px-4 py-3 border-b">Title</th>
+            <th class="px-4 py-3 border-b">Date</th>
+            <th class="px-4 py-3 border-b">Location</th>
+            <th class="px-4 py-3 border-b">Ticket Price ($)</th>
+            <th class="px-4 py-3 border-b">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let event of events" class="hover:bg-gray-700">
+            <td class="px-4 py-3 border-b">{{ event.title }}</td>
+            <td class="px-4 py-3 border-b">{{ event.date }}</td>
+            <td class="px-4 py-3 border-b">{{ event.location }}</td>
+            <td class="px-4 py-3 border-b">{{ event.ticket_price }}</td>
+            <td class="px-4 py-3 border-b">
+              <button
+                class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg"
+                (click)="openModal(event)"
+              >
+                Edit
+              </button>
+              <button
+                class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg ml-2"
+                (click)="deleteEvent(event.event_id)"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Add/Edit Event Modal -->
+    <app-add-event
+      *ngIf="showModal"
+      [event]="selectedEvent"
+      (closeModalEvent)="closeModal()"
+      (saveEvent)="saveEvent($event)"
+    ></app-add-event>
+  </div>
 </div>

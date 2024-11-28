@@ -14,15 +14,29 @@ export class EventsComponent implements OnInit {
   events: any[] = [];  // Initialize events as an empty array
   showModal = false;
   selectedEvent: any = null; // Store the event being edited
+  organizerId: string = ''; // Store organizer ID
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
+    this.fetchOrganizerId(); // Extract organizer ID from URL
     this.fetchEvents(); // Fetch events when component is initialized
   }
 
+  // Extract organizer ID from the URL
+  fetchOrganizerId(): void {
+    const url = window.location.href; // Get full URL
+    const segments = url.split('/'); // Split by '/'
+    const organizerIndex = segments.indexOf('organizer'); // Find 'organizer' in URL
+    if (organizerIndex !== -1 && segments[organizerIndex + 1]) {
+      this.organizerId = segments[organizerIndex + 1]; // Fetch the next segment as organizer ID
+    } else {
+      console.error('Organizer ID not found in the URL');
+    }
+  }
+
   fetchEvents(): void {
-    this.http.get<any[]>('http://localhost:8080/getevents')  // API endpoint to fetch events
+    this.http.get<any[]>(`http://localhost:8080/geteventsbyorgid?orgId=${this.organizerId}`) // Pass orgId as query param
       .subscribe({
         next: (data) => {
           this.events = data;  // Assign the fetched data to the events array
@@ -73,9 +87,19 @@ export class EventsComponent implements OnInit {
 
   deleteEvent(eventId: number): void {
     if (confirm('Are you sure you want to delete this event?')) {
-      this.events = this.events.filter(event => event.event_id !== eventId);
-      $('#eventsTable').DataTable().destroy();
-      this.initializeDataTable();
+      // Make the HTTP DELETE request to the backend
+      this.http.delete(`http://localhost:8080/deleteevent?eventId=${eventId}`)
+        .subscribe({
+          next: () => {
+            // Remove the event from the list
+            this.events = this.events.filter(event => event.event_id !== eventId);
+            $('#eventsTable').DataTable().destroy();
+            this.initializeDataTable();
+          },
+          error: (err) => {
+            console.error('Error deleting event:', err);
+          }
+        });
     }
   }
 

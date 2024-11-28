@@ -331,3 +331,76 @@ func DeleteEvent(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Event deleted successfully"))
 }
+
+
+
+func GetAllBookings(w http.ResponseWriter, r *http.Request) {
+	// Handle CORS preflight request
+	if r.Method == "OPTIONS" {
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:4200")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+		w.WriteHeader(http.StatusOK)
+		return
+	}
+
+	// Set CORS headers for actual request
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:4200")
+	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+
+	// Connect to the database
+	db := database.Connect()
+	defer db.Close()
+
+	// Query to fetch event and ticket details for the given organizer ID
+	rows, err := db.Query(`
+		SELECT 
+			e.event_id, 
+			e.title, 
+			e.location, 
+			e.date, 
+			e.time, 
+			et.ticket_id, 
+			et.name AS ticket_name, 
+			et.total_price
+		FROM 
+			events e
+		JOIN 
+			event_tickets et ON e.event_id = et.event_id
+		`)
+
+	if err != nil {
+		log.Println("Error fetching events and tickets:", err)
+		http.Error(w, "Error fetching events and tickets", http.StatusInternalServerError)
+		return
+	}
+	defer rows.Close()
+
+	// Prepare a slice to store the results
+	var bookings []models.EventWithTickets
+
+	// Loop through the result set and populate the bookings slice
+	for rows.Next() {
+		var booking models.EventWithTickets
+		if err := rows.Scan(&booking.EventID, &booking.Title, &booking.Location, &booking.Date, &booking.Time, &booking.TicketID, &booking.TicketName, &booking.TotalPrice); err != nil {
+			log.Println("Error scanning event and ticket:", err)
+			http.Error(w, "Error scanning event and ticket", http.StatusInternalServerError)
+			return
+		}
+		bookings = append(bookings, booking)
+	}
+
+	// If no bookings are found, return an empty array
+	if len(bookings) == 0 {
+		bookings = []models.EventWithTickets{}
+	}
+
+	// Send the bookings as JSON response
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(bookings); err != nil {
+		log.Println("Error encoding bookings:", err)
+		http.Error(w, "Error encoding bookings", http.StatusInternalServerError)
+	}
+}

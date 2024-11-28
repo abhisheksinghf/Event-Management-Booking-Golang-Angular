@@ -31,6 +31,7 @@ func main() {
 	http.HandleFunc("/geteventsbyorgid", handlers.GetEventsByOrganizer)
 	http.HandleFunc("/getbookings", handlers.GetBookings)
 	http.HandleFunc("/deleteevent", handlers.DeleteEvent)
+	http.HandleFunc("/getallbookings", handlers.GetAllBookings)
 
 	// Start the server
 	log.Println("Server starting on port 8080...")

@@ -38,9 +38,9 @@ export class LoginComponent implements OnInit {
         if (response.role === 'organizer') {
           this.router.navigate([`/organizer/${userId}`]);
         } else if (response.role === 'admin') {
-          this.router.navigate([`/admin/${userId}`]);
+          this.router.navigate([`/superadmin/${userId}`]);
         } else {
-          this.router.navigate([`/attendee/${userId}`]);
+          this.router.navigate([`/participant/${userId}`]);
         }
       },
       error: (error) => {

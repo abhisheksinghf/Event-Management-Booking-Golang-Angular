@@ -6,11 +6,11 @@ import { jsPDF } from 'jspdf';  // Correct import for jsPDF
 import * as XLSX from 'xlsx';  // Correct import for XLSX
 
 @Component({
-  selector: 'app-bookings',
-  templateUrl: './bookings.component.html',
-  styleUrls: ['./bookings.component.css']
+  selector: 'app-adminbookings',
+  templateUrl: './adminbookings.component.html',
+  styleUrls: ['./adminbookings.component.css']
 })
-export class BookingsComponent implements OnInit {
+export class AdminbookingsComponent implements OnInit {
   bookings: any[] = [];  // Initialize bookings as an empty array
   showModal = false;
   selectedEvent: any = null; // Store the event being edited
@@ -23,9 +23,8 @@ export class BookingsComponent implements OnInit {
 
   fetchBookings(): void {
     // Get the organizer ID from the URL or elsewhere (e.g., localStorage, sessionStorage)
-    const organizerId = this.getOrganizerIdFromURL();
 
-    this.http.get<any[]>(`http://localhost:8080/getbookings?orgId=${organizerId}`, {
+    this.http.get<any[]>(`http://localhost:8080/getallbookings`, {
       headers: {
         'Content-Type': 'application/json',
         // Add Authorization or other headers if needed
@@ -46,16 +45,7 @@ export class BookingsComponent implements OnInit {
     });
   }
 
-  getOrganizerIdFromURL(): string {
-    // You can modify this to fetch the organizerId from the URL or route parameters as per your routing logic
-    const url = window.location.href;
-    const segments = url.split('/');
-    const orgIndex = segments.indexOf('organizer');
-    if (orgIndex !== -1 && segments[orgIndex + 1]) {
-      return segments[orgIndex + 1]; // Return the organizerId
-    }
-    return ''; // Default return value in case no orgId is found
-  }
+
 
   initializeDataTable(): void {
     setTimeout(() => {
