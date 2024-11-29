@@ -49,11 +49,9 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE") 
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
-	// Open the database connection
 	db := database.Connect()
 	defer db.Close()
 
-	// Query to fetch all events
 	rows, err := db.Query("SELECT event_id, title, description, location, date, time, category, ticket_price, total_tickets, available_tickets, organizer_id FROM events")
 	if err != nil {
 		log.Println("Error fetching events:", err)
@@ -74,12 +72,11 @@ func GetEvents(w http.ResponseWriter, r *http.Request) {
 		events = append(events, event)
 	}
 
-	// Send the events as JSON response
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(events)
 }
 func BookTicket(w http.ResponseWriter, r *http.Request) {
-    // Parse the request body
+    
     var registration struct {
         EventID    int     `json:"event_id"`
         Name       string  `json:"name"`
@@ -93,11 +90,9 @@ func BookTicket(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    // Open the database connection
     db := database.Connect()
     defer db.Close()
 
-    // Start a transaction
     tx, err := db.Begin()
     if err != nil {
         log.Println("Error starting transaction:", err)
@@ -105,7 +100,6 @@ func BookTicket(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    // Insert the ticket registration
     _, err = tx.Exec(`
         INSERT INTO event_tickets (event_id, name, total_price) 
         VALUES (?, ?, ?)`, registration.EventID, registration.Name, registration.TotalPrice)
@@ -116,7 +110,6 @@ func BookTicket(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    // Decrement the available_tickets count
     result, err := tx.Exec(`
         UPDATE events 
         SET available_tickets = available_tickets - 1 
@@ -136,7 +129,6 @@ func BookTicket(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    // Commit the transaction
     err = tx.Commit()
     if err != nil {
         log.Println("Error committing transaction:", err)
@@ -144,7 +136,6 @@ func BookTicket(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    // Respond with success in JSON format
     w.Header().Set("Content-Type", "application/json")
     w.WriteHeader(http.StatusOK)
     json.NewEncoder(w).Encode(map[string]string{
@@ -153,23 +144,19 @@ func BookTicket(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetEventsByOrganizer(w http.ResponseWriter, r *http.Request) {
-	// Set CORS headers to allow requests from Angular app running on localhost:4200
 	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:4200")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
-	// Get organizer ID from query parameter
 	organizerID := r.URL.Query().Get("orgId")
 	if organizerID == "" {
 		http.Error(w, "Missing orgId query parameter", http.StatusBadRequest)
 		return
 	}
 
-	// Connect to the database
 	db := database.Connect()
 	defer db.Close()
 
-	// Query the database for events related to the organizer ID
 	rows, err := db.Query(`
 		SELECT event_id, title, description, location, date, time, category, ticket_price, total_tickets, available_tickets, organizer_id
 		FROM events
@@ -182,7 +169,6 @@ func GetEventsByOrganizer(w http.ResponseWriter, r *http.Request) {
 	}
 	defer rows.Close()
 
-	// Create a slice to hold the events
 	var events []models.Event
 	for rows.Next() {
 		var event models.Event
@@ -194,12 +180,10 @@ func GetEventsByOrganizer(w http.ResponseWriter, r *http.Request) {
 		events = append(events, event)
 	}
 
-	// If no events are found, return an empty array
 	if len(events) == 0 {
 		events = []models.Event{}
 	}
 
-	// Send events as JSON response
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(events); err != nil {
 		log.Println("Error encoding events:", err)
@@ -208,7 +192,6 @@ func GetEventsByOrganizer(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetBookings(w http.ResponseWriter, r *http.Request) {
-	// Handle CORS preflight request
 	if r.Method == "OPTIONS" {
 		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:4200")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
@@ -217,23 +200,19 @@ func GetBookings(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Set CORS headers for actual request
 	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:4200")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
-	// Get organizer ID from query parameter
 	organizerID := r.URL.Query().Get("orgId")
 	if organizerID == "" {
 		http.Error(w, "Missing orgId query parameter", http.StatusBadRequest)
 		return
 	}
 
-	// Connect to the database
 	db := database.Connect()
 	defer db.Close()
 
-	// Query to fetch event and ticket details for the given organizer ID
 	rows, err := db.Query(`
 		SELECT 
 			e.event_id, 
@@ -258,10 +237,8 @@ func GetBookings(w http.ResponseWriter, r *http.Request) {
 	}
 	defer rows.Close()
 
-	// Prepare a slice to store the results
 	var bookings []models.EventWithTickets
 
-	// Loop through the result set and populate the bookings slice
 	for rows.Next() {
 		var booking models.EventWithTickets
 		if err := rows.Scan(&booking.EventID, &booking.Title, &booking.Location, &booking.Date, &booking.Time, &booking.TicketID, &booking.TicketName, &booking.TotalPrice); err != nil {
@@ -272,12 +249,10 @@ func GetBookings(w http.ResponseWriter, r *http.Request) {
 		bookings = append(bookings, booking)
 	}
 
-	// If no bookings are found, return an empty array
 	if len(bookings) == 0 {
 		bookings = []models.EventWithTickets{}
 	}
 
-	// Send the bookings as JSON response
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(bookings); err != nil {
 		log.Println("Error encoding bookings:", err)
@@ -294,23 +269,19 @@ func DeleteEvent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Set CORS headers for the DELETE method
 	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:4200")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
-	// Get the event ID from the query parameters
 	eventID := r.URL.Query().Get("eventId")
 	if eventID == "" {
 		http.Error(w, "Missing eventId query parameter", http.StatusBadRequest)
 		return
 	}
 
-	// Connect to the database
 	db := database.Connect()
 	defer db.Close()
 
-	// Query to delete the event from the 'events' table
 	_, err := db.Exec("DELETE FROM events WHERE event_id = ?", eventID)
 	if err != nil {
 		log.Println("Error deleting event:", err)
@@ -318,7 +289,6 @@ func DeleteEvent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Respond with a success message
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("Event deleted successfully"))
 }
@@ -326,7 +296,6 @@ func DeleteEvent(w http.ResponseWriter, r *http.Request) {
 
 
 func GetAllBookings(w http.ResponseWriter, r *http.Request) {
-	// Handle CORS preflight request
 	if r.Method == "OPTIONS" {
 		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:4200")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
@@ -335,17 +304,14 @@ func GetAllBookings(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Set CORS headers for actual request
 	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:4200")
 	w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
 
 
-	// Connect to the database
 	db := database.Connect()
 	defer db.Close()
 
-	// Query to fetch event and ticket details for the given organizer ID
 	rows, err := db.Query(`
 		SELECT 
 			e.event_id, 
@@ -369,10 +335,8 @@ func GetAllBookings(w http.ResponseWriter, r *http.Request) {
 	}
 	defer rows.Close()
 
-	// Prepare a slice to store the results
 	var bookings []models.EventWithTickets
 
-	// Loop through the result set and populate the bookings slice
 	for rows.Next() {
 		var booking models.EventWithTickets
 		if err := rows.Scan(&booking.EventID, &booking.Title, &booking.Location, &booking.Date, &booking.Time, &booking.TicketID, &booking.TicketName, &booking.TotalPrice); err != nil {
@@ -383,12 +347,10 @@ func GetAllBookings(w http.ResponseWriter, r *http.Request) {
 		bookings = append(bookings, booking)
 	}
 
-	// If no bookings are found, return an empty array
 	if len(bookings) == 0 {
 		bookings = []models.EventWithTickets{}
 	}
 
-	// Send the bookings as JSON response
 	w.Header().Set("Content-Type", "application/json")
 	if err := json.NewEncoder(w).Encode(bookings); err != nil {
 		log.Println("Error encoding bookings:", err)
