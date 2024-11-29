@@ -5,14 +5,12 @@ import (
 	"fmt"
 	"log"
 
-	_ "github.com/go-sql-driver/mysql" // MySQL driver
+	_ "github.com/go-sql-driver/mysql"
 )
 
-// Connect function to open a connection to the MySQL database.
 func Connect() *sql.DB {
-	// Use your own database credentials here
-	dsn := "root:@tcp(localhost:3306)/algomox-event-mgmt" // Change the DSN accordingly
-	db, err := sql.Open("mysql", dsn)
+	dsn := "root:@tcp(localhost:3306)/algomox-event-mgmt" 
+		db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatal("Error connecting to the database: ", err)
 	}
