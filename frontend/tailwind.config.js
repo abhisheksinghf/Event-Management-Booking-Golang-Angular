@@ -5,8 +5,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#8b5cf6', // Purple gradient
-        background: '#181818', // Dark theme background
+        primary: '#8b5cf6', 
+        background: '#181818', 
       },
     },
   },

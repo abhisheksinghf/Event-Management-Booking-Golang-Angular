@@ -57,10 +57,10 @@ import { SuperadminComponent } from './pages/superadmin/superadmin.component';
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule,  // Import routing module
-    HttpClientModule, // Make sure HttpClientModule 
+    AppRoutingModule,  
+    HttpClientModule,  
   ],
   providers: [],
-  bootstrap: [AppComponent],  // Bootstrap the AppComponent
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

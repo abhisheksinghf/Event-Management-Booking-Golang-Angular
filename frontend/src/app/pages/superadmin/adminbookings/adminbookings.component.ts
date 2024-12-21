@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import $ from 'jquery';
 import 'datatables.net';
-import { jsPDF } from 'jspdf';  // Correct import for jsPDF
-import * as XLSX from 'xlsx';  // Correct import for XLSX
+import { jsPDF } from 'jspdf';  
+import * as XLSX from 'xlsx';  
 
 @Component({
   selector: 'app-adminbookings',
